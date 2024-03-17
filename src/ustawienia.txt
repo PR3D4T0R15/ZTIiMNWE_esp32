@@ -1,0 +1,4 @@
+SSID=makapaka
+Haslo=makapaka2
+
+pomiar=1h

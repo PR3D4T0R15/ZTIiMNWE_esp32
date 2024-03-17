@@ -53,7 +53,12 @@ std::string odczytajSSID()
   File plik = SD.open("/ustawienia.txt");
   while (plik.available())
   {
-    Serial.write(plik.read());
+    String linia = plik.readStringUntil('\r');
+    if(linia.indexOf("SSID=") != -1)
+    {
+      linia = linia.substring(5);
+      Serial.print(linia);
+    }    
   }
   plik.close();
   std::string output = "test";
