@@ -1,19 +1,28 @@
+//biblioteka Arduino
 #include <Arduino.h>
+#include <ArduinoOTA.h>
+//biblioteki do czujnika temperatury
 #include <OneWire.h>
 #include <DallasTemperature.h>
+//biblioteki do karty SD
+#include <SPI.h>
+#include <SD.h>
+//biblioteki do string
+#include <string.h>
 
 
-// Pin config (wybranie pinu na esp32 do podlaczenia)
+//Pin config (wybranie pinu na esp32 do podlaczenia)
 const int oneWireBus = 4; 
 const int errorPin = 25; 
 const int correctPin = 26;
 
-// Setup a oneWire instance to communicate with any OneWire devices
+//Konfigurowanie instancji w celu komunikacji z innym urządzeniem OneWire
 OneWire oneWire(oneWireBus);
-
-// Pass our oneWire reference to Dallas Temperature sensor 
+//"Przekazanie" odniesienia oneWire do czujnika temperatury Dallas
 DallasTemperature sensors(&oneWire);
 
+
+//Funkcja pomiaru temperatury
 float pomiar_temperatury()
 {
   sensors.requestTemperatures(); 
@@ -21,17 +30,36 @@ float pomiar_temperatury()
   return temperatureC;
 }
 
+
+//Funkcja dla diody led gdy uklad nie dziala poprawnie
 void blad()
 {
-  digitalWrite(correctPin, LOW);
+  digitalWrite(correctPin, LOW); 
   digitalWrite(errorPin, HIGH);
 }
 
+
+//Funkcja dla diody led gdy uklad dziala poprawnie
 void dziala()
 {
   digitalWrite(errorPin, LOW);
   digitalWrite(correctPin, HIGH);
 }
+
+
+//Odczytywanie danych z karty sd - SSID
+std::string odczytajSSID()
+{
+  File plik = SD.open("/ustawienia.txt");
+  while (plik.available())
+  {
+    Serial.write(plik.read());
+  }
+  plik.close();
+  std::string output = "test";
+  return output;
+}
+
 
 void setup()
 {
@@ -43,7 +71,9 @@ void setup()
   pinMode(errorPin, OUTPUT);
   //setup correctPin as output
   pinMode(correctPin, OUTPUT);
+  SD.begin(5);
 }
+
 
 void loop()
 {
@@ -56,5 +86,6 @@ void loop()
   delay(1000);
   dziala();
   delay(1000);
+  odczytajSSID();
 }
 
