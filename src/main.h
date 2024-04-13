@@ -1,5 +1,5 @@
 #pragma once
 
-
-//zmienne
-const int oneWireBus = 4; 
+//var
+const int oneWireBus = 4;
+const int spiSs = 5;

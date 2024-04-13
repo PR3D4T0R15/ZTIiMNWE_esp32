@@ -1,7 +1,4 @@
 #include <led.h>
-//biblioteka Arduino
-#include <Arduino.h>
-#include <ArduinoOTA.h>
 
 
 led::led(int errPin, int corrPin)
