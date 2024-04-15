@@ -16,7 +16,7 @@
 
 Temperature temp1(oneWireBus);
 Led led1(errorPin, correctPin);
-NetConn netWifi1("mangusta","az6B8kc0Ag9Hx");
+NetConn netWifi1("xxx","xxx");
 RtcTime rtc1;
 SdCard card1(spiSs);
 
