@@ -9,9 +9,9 @@ private:
     String _ssid;
     String _pass;
 public:
-    NetConn(String ssid, String pass);
+    NetConn();
     ~NetConn();
-    void connect();
+    void connect(String ssid, String pass);
     bool isConnected();
     String getIP();
 };

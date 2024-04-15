@@ -1,18 +1,17 @@
 #include <netConn.h>
 
-NetConn::NetConn(String ssid, String pass)
+NetConn::NetConn()
 {
-    _ssid = ssid;
-    _pass = pass;
-    
 }
 
 NetConn::~NetConn()
 {
 }
 
-void NetConn::connect()
+void NetConn::connect(String ssid, String pass)
 {
+    _ssid = ssid;
+    _pass = pass;
     WiFi.mode(WIFI_STA);
     WiFi.begin(_ssid, _pass);
     while (WiFi.status() != WL_CONNECTED) {
