@@ -6,14 +6,13 @@
 #include <SD.h>
 
 //class
-class sdCard
+class SdCard
 {
 private:
     int _slaveSelect;
-    File _fileSettings;
 public:
-    sdCard(int slaveSelect);
-    ~sdCard();
+    SdCard(int slaveSelect);
+    ~SdCard();
     String getSSID();
     String getHaslo();
 

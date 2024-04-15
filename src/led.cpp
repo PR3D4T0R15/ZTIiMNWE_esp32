@@ -1,22 +1,24 @@
 #include <led.h>
 
 
-led::led(int errPin, int corrPin)
+Led::Led(int errPin, int corrPin)
 {
     _errorPin = errPin;
     _correctPin = corrPin;
-    //setup errorPin as output
-    pinMode(_errorPin, OUTPUT);
-    //setup correctPin as output
-    pinMode(_correctPin, OUTPUT);
 }
 
-led::~led()
+Led::~Led()
 {
 }
 
+void Led::begin()
+{
+    pinMode(_errorPin, OUTPUT);
+    pinMode(_correctPin, OUTPUT);
+}
+
 //Funkcja dla diody led gdy uklad nie dziala poprawnie
-void led::blad()
+void Led::blad()
 {
     digitalWrite(_correctPin, LOW); 
     digitalWrite(_errorPin, HIGH);
@@ -24,7 +26,7 @@ void led::blad()
 
 
 //Funkcja dla diody led gdy uklad dziala poprawnie
-void led::dziala()
+void Led::dziala()
 {
     digitalWrite(_errorPin, LOW);
     digitalWrite(_correctPin, HIGH);

@@ -6,14 +6,15 @@
 #include <DallasTemperature.h>
 
 //class
-class temperature
+class Temperature
 {
 private:
-    OneWire _oneWire;
-    DallasTemperature _sensor;
+    OneWire *_oneWire;
+    DallasTemperature *_sensor;
 
 public:
-    temperature(int OneWirePin);
-    ~temperature();
+    Temperature(int OneWirePin);
+    ~Temperature();
+    void begin();
     float getTemperature();
 };

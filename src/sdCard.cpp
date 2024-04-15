@@ -1,31 +1,46 @@
 #include <sdCard.h>
 
-sdCard::sdCard(int slaveSelect)
+SdCard::SdCard(int slaveSelect)
 {
     _slaveSelect = slaveSelect;
     SD.begin(5);
-    _fileSettings = SD.open("/ustawienia.txt");
 }
 
-sdCard::~sdCard()
+SdCard::~SdCard()
 {
-    _fileSettings.close();
 }
 
 //Odczytywanie danych z karty sd - SSID
-String sdCard::getSSID()
+String SdCard::getSSID()
 {
   File plik = SD.open("/ustawienia.txt");
-  String linia;
+  String slowo;
   while (plik.available())
   {
-    linia = plik.readStringUntil('\r');
+    String linia = plik.readStringUntil('\n');
     if(linia.indexOf("SSID=") != -1)
     {
-      linia = linia.substring(5);
-      Serial.print(linia);
+      slowo = linia.substring(5);
+      break;
     }    
   }
   plik.close();
-  return linia;
+  return slowo;
+}
+
+String SdCard::getHaslo()
+{
+  File plik = SD.open("/ustawienia.txt");
+  String slowo;
+  while (plik.available())
+  {
+    String linia = plik.readStringUntil('\n');
+    if(linia.indexOf("Haslo=") != -1)
+    {
+      slowo = linia.substring(6);
+      break;
+    }    
+  }
+  plik.close();
+  return slowo;
 }

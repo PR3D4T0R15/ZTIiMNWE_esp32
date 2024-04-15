@@ -4,14 +4,15 @@
 #include <ArduinoOTA.h>
 
 //class
-class led
+class Led
 {
 private:
     int _errorPin;
     int _correctPin;
 public:
-    led(int errPin, int corrPin);
-    ~led();
+    Led(int errPin, int corrPin);
+    ~Led();
+    void begin();
     void dziala();
     void blad();
 };
