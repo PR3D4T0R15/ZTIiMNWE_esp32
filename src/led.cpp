@@ -18,7 +18,7 @@ void Led::begin()
 }
 
 //Funkcja dla diody led gdy uklad nie dziala poprawnie
-void Led::blad()
+void Led::error()
 {
     digitalWrite(_correctPin, LOW); 
     digitalWrite(_errorPin, HIGH);
@@ -26,8 +26,14 @@ void Led::blad()
 
 
 //Funkcja dla diody led gdy uklad dziala poprawnie
-void Led::dziala()
+void Led::working()
 {
     digitalWrite(_errorPin, LOW);
+    digitalWrite(_correctPin, HIGH);
+}
+
+void Led::init()
+{
+    digitalWrite(_errorPin, HIGH);
     digitalWrite(_correctPin, HIGH);
 }

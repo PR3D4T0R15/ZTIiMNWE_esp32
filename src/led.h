@@ -13,6 +13,7 @@ public:
     Led(int errPin, int corrPin);
     ~Led();
     void begin();
-    void dziala();
-    void blad();
+    void init();
+    void working();
+    void error();
 };

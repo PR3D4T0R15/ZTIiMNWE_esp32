@@ -15,5 +15,6 @@ public:
     ~SdCard();
     String getSSID();
     String getHaslo();
-
+    String getUrl();
+    String getAuth();
 };

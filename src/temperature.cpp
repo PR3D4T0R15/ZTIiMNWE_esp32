@@ -13,6 +13,7 @@ Temperature::~Temperature()
 void Temperature::begin()
 {
     _sensor->begin();
+    _sensor->setResolution(12);
 }
 
 float Temperature::getTemperature()

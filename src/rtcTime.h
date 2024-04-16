@@ -1,6 +1,7 @@
 #pragma once
 
 #include <RTClib.h>
+#include <TimeLib.h>
 
 class RtcTime
 {
@@ -12,4 +13,5 @@ public:
     void begin();
     DateTime getTime();
     void adjustTime(const DateTime data);
+    void adjustTime(String date);
 };

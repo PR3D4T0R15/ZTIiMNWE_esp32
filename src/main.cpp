@@ -1,45 +1,66 @@
 #include <Arduino.h>
 #include <ArduinoOTA.h>
+#include <esp_sleep.h>
 
-//bibloteka main
-#include <main.h>
-//biblioteka led
 #include <led.h>
-//biblioteka temperature
 #include <temperature.h>
-//biblioteka sdCard
 #include <sdCard.h>
-//biblioteka net
 #include <netConn.h>
-//biblioteka RTC
+#include <RequestClient.h>
 #include <rtcTime.h>
 
-Temperature temp1(oneWireBus);
-Led led1(errorPin, correctPin);
-NetConn netWifi1("xxx","xxx");
-RtcTime rtc1;
-SdCard card1(spiSs);
+#define TIME_TO_SLEEP 1800000000
+#define oneWireBus  4
+#define spiSs  5
+#define errorPin  25
+#define correctPin  26
+
 
 void setup()
 {
+  //serial console
   Serial.begin(9600);
+  Serial.println("## WAKEUP ##");
+
+  SdCard card1(spiSs);
+  //get wifi conf
+  String ssid = card1.getSSID();
+  String pass = card1.getHaslo();
+  String url = card1.getUrl();
+  String auth = card1.getUrl();
+
+
+  RequestClient req1(url, auth);
+  Led led1(errorPin, correctPin);
+  NetConn netWifi1;
+  RtcTime rtc1;
+  Temperature temp1(oneWireBus);
+
+  //io devices
   temp1.begin();
   led1.begin();
-  //netWifi.connect();
   rtc1.begin();
+
+  //setup stage info
+  led1.init();
+    
+  //connect to wifi
+  netWifi1.connect(ssid, pass);
+  Serial.println("IP: " + netWifi1.getIP());
+
+  //update RTC time
+  String time = req1.getTime();
+  rtc1.adjustTime(time);
 }
 
 
 void loop()
 {
-  delay(2000);
-  String val1 = card1.getSSID();
-  String val2 = card1.getHaslo();
-  Serial.println(val1);
-  Serial.println(val2);
+  led1.working();
+  
   delay(1000);
-  led1.blad();
-  delay(1000);
-  led1.dziala();
+  Serial.println(rtc1.getTime().timestamp());
+  led1.error();
+  delay(10000);
 }
 
