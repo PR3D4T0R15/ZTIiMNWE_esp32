@@ -2,6 +2,8 @@
 
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include <RTClib.h>
+#include <TimeLib.h>
 
 class RequestClient
 {
@@ -14,6 +16,6 @@ public:
 
     //requests
     String ping();
-    bool sendData(float value);
+    bool sendData(float value, DateTime time);
     String getTime();
 };

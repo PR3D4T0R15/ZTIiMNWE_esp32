@@ -19,8 +19,8 @@ String RequestClient::ping()
     http.addHeader("Authorization", String(_auth));
 
     int responseCode = http.GET();
-
-    if (responseCode = 200)
+    
+    if (responseCode == 200)
     {
         String data = http.getString();
         return data;
@@ -32,7 +32,7 @@ String RequestClient::ping()
     http.end();
 }
 
-bool RequestClient::sendData(float value)
+bool RequestClient::sendData(float value, DateTime time)
 {
     HTTPClient http;
     http.begin(_url + "/data");
@@ -43,11 +43,11 @@ bool RequestClient::sendData(float value)
     String Body = "";
     JsonDocument doc;
     doc["temp"] = value;
+    doc["time"] = time.timestamp();
     serializeJson(doc, Body);
 
     int response = http.POST(Body);
-
-    if (response = 200)
+    if (response == 200)
     {
         Serial.println("POST..OK");
         return true;

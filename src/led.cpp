@@ -37,3 +37,9 @@ void Led::init()
     digitalWrite(_errorPin, HIGH);
     digitalWrite(_correctPin, HIGH);
 }
+
+void Led::off()
+{
+    digitalWrite(_errorPin, LOW);
+    digitalWrite(_correctPin, LOW);
+}

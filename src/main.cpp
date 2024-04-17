@@ -9,7 +9,8 @@
 #include <RequestClient.h>
 #include <rtcTime.h>
 
-#define TIME_TO_SLEEP 1800000000
+#define usInS 1000000
+#define sInMin 60
 #define oneWireBus  4
 #define spiSs  5
 #define errorPin  25
@@ -17,32 +18,29 @@
 
 
 void setup()
-{
-  //serial console
+{ 
   Serial.begin(9600);
   Serial.println("## WAKEUP ##");
+  Led led1(errorPin, correctPin);
+  led1.begin();
+  led1.init();
 
   SdCard card1(spiSs);
-  //get wifi conf
   String ssid = card1.getSSID();
   String pass = card1.getHaslo();
   String url = card1.getUrl();
-  String auth = card1.getUrl();
+  String auth = card1.getAuth();
 
-
+  //setup http led rtc temp
   RequestClient req1(url, auth);
-  Led led1(errorPin, correctPin);
   NetConn netWifi1;
+  
   RtcTime rtc1;
   Temperature temp1(oneWireBus);
 
   //io devices
   temp1.begin();
-  led1.begin();
   rtc1.begin();
-
-  //setup stage info
-  led1.init();
     
   //connect to wifi
   netWifi1.connect(ssid, pass);
@@ -51,16 +49,38 @@ void setup()
   //update RTC time
   String time = req1.getTime();
   rtc1.adjustTime(time);
+
+  //get temp and time
+  float tempValue = temp1.getTemperature();
+  DateTime timeValue = rtc1.getTime();
+
+  //send temp
+  bool status = req1.sendData(tempValue, timeValue);
+
+  if (status)
+  {
+    led1.working();
+    delay(2000);
+    Serial.println("SLEEP...");
+    led1.off();
+    Serial.flush();
+    esp_sleep_enable_timer_wakeup(10 * 1000000);
+    esp_deep_sleep_start();
+  }else
+  {
+    led1.error();
+    Serial.println("ERROR...");
+    while (1)
+    {
+      Serial.println("ERROR!");
+      delay(2000);
+    }
+    
+  }
 }
 
 
 void loop()
 {
-  led1.working();
-  
-  delay(1000);
-  Serial.println(rtc1.getTime().timestamp());
-  led1.error();
-  delay(10000);
 }
 

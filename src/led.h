@@ -16,4 +16,5 @@ public:
     void init();
     void working();
     void error();
+    void off();
 };
